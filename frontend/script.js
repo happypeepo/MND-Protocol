@@ -147,4 +147,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // ── Live Interceptor Demo ────────────────────────────
+    const btnIntercept = document.getElementById('btnIntercept');
+    if (btnIntercept) {
+        btnIntercept.addEventListener('click', async () => {
+            const payload = document.getElementById('demoPayload').value.trim();
+            const statusEl = document.getElementById('demoStatus');
+            statusEl.textContent = 'Intercepting & Sending...';
+            
+            try {
+                const res = await fetch('http://localhost:3000/intercept', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ payload_hex: payload })
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('liveOriginal').textContent = data.original_size;
+                    document.getElementById('livePacked').textContent = data.packed_size;
+                    document.getElementById('liveGas').textContent = data.gas_used;
+                    
+                    const hashLink = document.getElementById('liveHash');
+                    hashLink.textContent = data.tx_hash.substring(0,10) + '...';
+                    
+                    statusEl.textContent = 'Success!';
+                } else {
+                    statusEl.textContent = 'Error: API failed';
+                }
+            } catch (err) {
+                statusEl.textContent = 'Error: Is sidecar running?';
+                console.error(err);
+            }
+        });
+    }
 });

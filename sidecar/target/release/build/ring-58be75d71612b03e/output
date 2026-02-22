@@ -12,7 +12,7 @@ cargo:rerun-if-env-changed=CARGO_CFG_TARGET_OS
 cargo:rerun-if-env-changed=CARGO_CFG_TARGET_ENV
 cargo:rerun-if-env-changed=CARGO_CFG_TARGET_ENDIAN
 OPT_LEVEL = Some(3)
-OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/ring-58be75d71612b03e/out)
+OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/ring-58be75d71612b03e/out)
 TARGET = Some(aarch64-apple-darwin)
 CARGO_ENCODED_RUSTFLAGS = Some()
 HOST = Some(aarch64-apple-darwin)
@@ -62,11 +62,11 @@ exit status: 0
 exit status: 0
 exit status: 0
 exit status: 0
-cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-X4FULHMJ' (errno=Operation not permitted)
-cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-txuJDZ6I' (errno=Operation not permitted)
+cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-HrtxWWv9' (errno=Operation not permitted)
+cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-kPpwQjCe' (errno=Operation not permitted)
 cargo:rustc-link-lib=static=ring_core_0_17_14_
 OPT_LEVEL = Some(3)
-OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/ring-58be75d71612b03e/out)
+OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/ring-58be75d71612b03e/out)
 TARGET = Some(aarch64-apple-darwin)
 CARGO_ENCODED_RUSTFLAGS = Some()
 HOST = Some(aarch64-apple-darwin)
@@ -93,10 +93,10 @@ cargo:rerun-if-env-changed=CFLAGS_aarch64_apple_darwin
 CFLAGS_aarch64_apple_darwin = None
 cargo:rerun-if-env-changed=CFLAGS_aarch64-apple-darwin
 CFLAGS_aarch64-apple-darwin = None
-cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-pKMzaSbR' (errno=Operation not permitted)
-cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-5GNNfjOx' (errno=Operation not permitted)
+cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-V6FGCYXH' (errno=Operation not permitted)
+cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-UnhJU9Vz' (errno=Operation not permitted)
 cargo:rustc-link-lib=static=ring_core_0_17_14__test
-cargo:rustc-link-search=native=/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/ring-58be75d71612b03e/out
+cargo:rustc-link-search=native=/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/ring-58be75d71612b03e/out
 cargo:rerun-if-changed=crypto/perlasm/x86_64-xlate.pl
 cargo:rerun-if-changed=crypto/perlasm/x86gas.pl
 cargo:rerun-if-changed=crypto/perlasm/x86nasm.pl

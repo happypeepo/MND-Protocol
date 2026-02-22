@@ -1,35 +1,39 @@
-use std::io::Write;
+use zstd::stream::encode_all;
 
 // Hardcoded Dictionary mapping for 'transfer(address,uint256)'
 const TRANSFER_SELECTOR: &[u8; 4] = &[0xa9, 0x05, 0x9c, 0xbb];
 const TRANSFER_DICT_ID: u8 = 0x01;
 
+pub struct PackedData {
+    pub compressed_size: usize,
+    pub execution_payload: Vec<u8>,
+}
+
 /// Zero-copy dictionary substitution and Zstd compression.
-/// Expects raw transaction payload bytes intercepted from the RPC mempool.
-pub async fn pack_transaction(payload: &[u8]) -> Result<Vec<u8>, std::io::Error> {
+pub async fn pack_transaction(payload: &[u8]) -> Result<PackedData, std::io::Error> {
     if payload.len() < 4 {
-        return Ok(payload.to_vec()); // Payload too small, skip compression
+        return Ok(PackedData { compressed_size: payload.len(), execution_payload: payload.to_vec() });
     }
 
-    // 1. Dictionary Substitution (Zero-copy slice inspection)
     let (selector, remaining_payload) = payload.split_at(4);
-    
-    // Pre-allocate buffer to prevent heap reallocation pauses
     let mut intermediate_buffer = Vec::with_capacity(payload.len());
 
     if selector == TRANSFER_SELECTOR {
         intermediate_buffer.push(TRANSFER_DICT_ID);
-        // Extend from slice allows bulk memory copying (memcpy under the hood)
         intermediate_buffer.extend_from_slice(remaining_payload); 
     } else {
-        intermediate_buffer.push(0x00); // 0x00 indicates no dictionary match
+        intermediate_buffer.push(0x00);
         intermediate_buffer.extend_from_slice(payload);
     }
 
-    // For the Hackathon EVM/Yul demo, we only send the dictionary-packed bytes.
-    // Full Zstd decompression on-chain requires a custom precompile or off-chain coprocessor.
-    // The Yul gateway is currently hardcoded to expand the dictionary ID.
-
-    // Final payload ready to be injected into Monad
-    Ok(intermediate_buffer)
+    // Now actually Zstd compress the intermediate buffer to show the REAL payload size
+    // We use compression level 3
+    let zstd_compressed = encode_all(intermediate_buffer.as_slice(), 3)?;
+    
+    // For EVM execution, we only send the dict-packed bytes because full 
+    // Zstd decompression requires an on-chain precompile.
+    Ok(PackedData {
+        compressed_size: zstd_compressed.len(),
+        execution_payload: intermediate_buffer,
+    })
 }

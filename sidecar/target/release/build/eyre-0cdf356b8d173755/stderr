@@ -1,5 +1,5 @@
 error[E0407]: method `backtrace` is not a member of trait `Error`
-  --> /Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/eyre-0cdf356b8d173755/out/probe.rs:19:9
+  --> /Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/eyre-0cdf356b8d173755/out/probe.rs:19:9
    |
 19 | /         fn backtrace(&self) -> Option<&Backtrace> {
 20 | |             let backtrace = Backtrace::capture();
@@ -11,13 +11,13 @@ error[E0407]: method `backtrace` is not a member of trait `Error`
    | |_________^ not a member of trait `Error`
 
 error[E0554]: `#![feature]` may not be used on the stable release channel
- --> /Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/eyre-0cdf356b8d173755/out/probe.rs:2:5
+ --> /Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/eyre-0cdf356b8d173755/out/probe.rs:2:5
   |
 2 |     #![feature(backtrace)]
   |     ^^^^^^^^^^^^^^^^^^^^^^
 
 warning: the feature `backtrace` has been stable since 1.65.0 and no longer requires an attribute to enable
- --> /Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/eyre-0cdf356b8d173755/out/probe.rs:2:16
+ --> /Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/eyre-0cdf356b8d173755/out/probe.rs:2:16
   |
 2 |     #![feature(backtrace)]
   |                ^^^^^^^^^

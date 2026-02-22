@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LatticePress — Zero-Copy Transaction Compression for Monad</title>
-    <meta name="description" content="LatticePress compresses Monad transactions by 75%, slashing state bloat from 16.76 GB/hr to 4.19 GB/hr using zero-copy Yul decompression.">
+    <meta name="description"
+        content="LatticePress compresses Monad transactions by 75%, slashing state bloat from 16.76 GB/hr to 4.19 GB/hr using zero-copy Yul decompression.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
     <!-- ════════════════ NAV ════════════════ -->
@@ -115,21 +120,24 @@
                 <div class="flow-card brutal-card animate-in">
                     <div class="flow-number">01</div>
                     <h3>Intercept</h3>
-                    <p>The Rust sidecar daemon intercepts raw transaction payloads from the RPC mempool before they hit the network.</p>
+                    <p>The Rust sidecar daemon intercepts raw transaction payloads from the RPC mempool before they hit
+                        the network.</p>
                     <div class="flow-tech">Rust · Tokio · Async</div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-card brutal-card accent animate-in">
                     <div class="flow-number">02</div>
                     <h3>Compress</h3>
-                    <p>4-byte function selectors are replaced with 1-byte dictionary IDs. The remaining payload is Zstd-compressed off-chain.</p>
+                    <p>4-byte function selectors are replaced with 1-byte dictionary IDs. The remaining payload is
+                        Zstd-compressed off-chain.</p>
                     <div class="flow-tech">Dict Substitution · Zstd</div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-card brutal-card animate-in">
                     <div class="flow-number">03</div>
                     <h3>Decompress</h3>
-                    <p>The LatticeGateway contract expands the dictionary ID back into the full selector in-memory using pure Yul, then executes via <code>delegatecall</code>.</p>
+                    <p>The LatticeGateway contract expands the dictionary ID back into the full selector in-memory using
+                        pure Yul, then executes via <code>delegatecall</code>.</p>
                     <div class="flow-tech">Yul · EVM Memory · delegatecall</div>
                 </div>
             </div>
@@ -214,7 +222,8 @@
                 </div>
 
                 <div class="bar-group animate-in">
-                    <div class="bar-label">Function Selector <span class="bar-label-sub">(calldata overhead)</span></div>
+                    <div class="bar-label">Function Selector <span class="bar-label-sub">(calldata overhead)</span>
+                    </div>
                     <div class="bar-row">
                         <div class="bar-track">
                             <div class="bar bar-standard" data-width="100">
@@ -295,6 +304,53 @@
         </div>
     </section>
 
+    <!-- ════════════════ INTERCEPTOR DEMO ════════════════ -->
+    <section class="section" id="live-demo">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">INTERACT</span>
+                <h2 class="section-title">Test the Interceptor</h2>
+                <p class="section-sub">Send a real transaction payload to the local LatticePress interceptor running on
+                    port 3000. It will ZSTD-compress the payload to prove exact sizes, then submit it to the live Monad
+                    test gateway.</p>
+            </div>
+            <div class="code-block brutal-card"
+                style="padding: 24px; max-width: 800px; margin: 0 auto; background: var(--white) !important; color: var(--dark)">
+                <label style="font-weight: bold; margin-bottom: 10px; display: block;">Raw Hex Payload :
+                    <code>transfer(address,uint256)</code></label>
+                <textarea id="demoPayload" rows="4"
+                    style="width: 100%; font-family: var(--font-mono); padding: 12px; margin-bottom: 24px; border: var(--border); resize: vertical"
+                    class="brutal-card">0xa9059cbb00000000000000000000000000000000000000000000000000000000000000b2000000000000000000000000000000000000000000000002b5e3af16b1880000</textarea>
+                <div style="display:flex; justify-content:center; align-items:center;">
+                    <button class="btn btn-primary" id="btnIntercept">Intercept & Compress</button>
+                    <span id="demoStatus"
+                        style="margin-left: 20px; font-weight: bold; color: var(--purple-deep); font-family: var(--font-mono)">Waiting...</span>
+                </div>
+            </div>
+
+            <div class="summary-grid" style="margin-top:40px" id="demoResults">
+                <div class="summary-card brutal-card">
+                    <div class="summary-label">Original Size</div>
+                    <div class="summary-stat"><span id="liveOriginal">-</span> <span style="font-size: 1rem">B</span>
+                    </div>
+                </div>
+                <div class="summary-card brutal-card accent">
+                    <div class="summary-label">ZSTD Packed Size</div>
+                    <div class="summary-stat"><span id="livePacked">-</span> <span style="font-size: 1rem">B</span>
+                    </div>
+                </div>
+                <div class="summary-card brutal-card">
+                    <div class="summary-label">Real Gas Used</div>
+                    <div class="summary-stat" id="liveGas">-</div>
+                </div>
+                <div class="summary-card brutal-card">
+                    <div class="summary-label">Tx Hash</div>
+                    <div class="summary-stat" style="font-size: 1.2rem; margin-top: 15px" id="liveHash">-</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ════════════════ CODE SNIPPET ════════════════ -->
     <section class="section section-dark" id="code">
         <div class="container">
@@ -347,4 +403,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

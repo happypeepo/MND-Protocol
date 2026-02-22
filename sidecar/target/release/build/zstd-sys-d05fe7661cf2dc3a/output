@@ -1,5 +1,5 @@
 cargo:rerun-if-env-changed=ZSTD_SYS_USE_PKG_CONFIG
-OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out)
+OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out)
 OPT_LEVEL = Some(3)
 TARGET = Some(aarch64-apple-darwin)
 CARGO_ENCODED_RUSTFLAGS = Some()
@@ -27,7 +27,7 @@ cargo:rerun-if-env-changed=CFLAGS_aarch64_apple_darwin
 CFLAGS_aarch64_apple_darwin = None
 cargo:rerun-if-env-changed=CFLAGS_aarch64-apple-darwin
 CFLAGS_aarch64-apple-darwin = None
-OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out)
+OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out)
 cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
 cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
 CRATE_CC_NO_DEFAULTS = None
@@ -43,7 +43,7 @@ cargo:rerun-if-env-changed=CFLAGS_aarch64_apple_darwin
 CFLAGS_aarch64_apple_darwin = None
 cargo:rerun-if-env-changed=CFLAGS_aarch64-apple-darwin
 CFLAGS_aarch64-apple-darwin = None
-OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out)
+OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out)
 cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
 cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
 CRATE_CC_NO_DEFAULTS = None
@@ -59,7 +59,7 @@ cargo:rerun-if-env-changed=CFLAGS_aarch64_apple_darwin
 CFLAGS_aarch64_apple_darwin = None
 cargo:rerun-if-env-changed=CFLAGS_aarch64-apple-darwin
 CFLAGS_aarch64-apple-darwin = None
-OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out)
+OUT_DIR = Some(/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out)
 cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
 cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
 CRATE_CC_NO_DEFAULTS = None
@@ -128,9 +128,9 @@ cargo:rerun-if-env-changed=ARFLAGS_aarch64_apple_darwin
 ARFLAGS_aarch64_apple_darwin = None
 cargo:rerun-if-env-changed=ARFLAGS_aarch64-apple-darwin
 ARFLAGS_aarch64-apple-darwin = None
-cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-pqKheYrL' (errno=Operation not permitted)
-cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-w9QXktlS' (errno=Operation not permitted)
+cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-YNbx1kR5' (errno=Operation not permitted)
+cargo:warning=ar: error: couldn't create cache file '/var/folders/x5/9g826hvd1vnfyttttjjl7jwh0000gn/T/xcrun_db-0rqk6rhn' (errno=Operation not permitted)
 cargo:rustc-link-lib=static=zstd
-cargo:rustc-link-search=native=/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out
-cargo:root=/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out
-cargo:include=/Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.0.16+zstd.1.5.7/zstd/lib
+cargo:rustc-link-search=native=/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out
+cargo:root=/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/build/zstd-sys-d05fe7661cf2dc3a/out
+cargo:include=/tmp/cargo_home/registry/src/index.crates.io-1949cf8c6b5b557f/zstd-sys-2.0.16+zstd.1.5.7/zstd/lib

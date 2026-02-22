@@ -1,6 +1,14 @@
 mod packer;
 mod sender;
 
+use axum::{
+    routing::post,
+    Json, Router,
+    extract::State,
+};
+use serde::{Deserialize, Serialize};
+use std::sync::Arc;
+use tower_http::cors::CorsLayer;
 use hex::FromHex;
 use std::env;
 
@@ -11,81 +19,61 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let args: Vec<String> = env::args().collect();
     
-    if args.len() > 1 {
-        if args[1] == "--demo" {
-            run_demo().await?;
-        } else if args[1] == "--live" && args.len() > 2 {
-            run_live(&args[2]).await?;
-        } else {
-            println!("Usage:");
-            println!("  ./sidecar --demo         # Run local simulation");
-            println!("  ./sidecar --live <ADDR>  # Send real tx to gateway on Monad");
-        }
+    if args.len() > 2 && args[1] == "--serve" {
+        run_server(args[2].clone()).await?;
     } else {
-        println!("LatticePress Sidecar Daemon Started.");
+        println!("Usage: ./sidecar --serve <GATEWAY_ADDR>");
+        println!("Example to run API proxy to Anvil:");
+        println!("  ./sidecar --serve 0x5FbDB2315678afecb367f032d93F642f64180aa3");
     }
 
     Ok(())
 }
 
-async fn run_live(gateway_addr: &str) -> Result<(), Box<dyn std::error::Error>> {
-    println!("🚀 Initializing LatticePress Protocol [LIVE MODE]...");
+async fn run_server(gateway_addr: String) -> Result<(), Box<dyn std::error::Error>> {
+    let app = Router::new()
+        .route("/intercept", post(intercept_handler))
+        .layer(CorsLayer::permissive())
+        .with_state(Arc::new(gateway_addr));
 
-    // The EVM ABI Encoding for transfer(0x00000000000000000000000000000000000000B2, 50 ether)
-    // 50 ether = 50 * 10^18 = 0x2b5e3af16b1880000
-    // 0xa9059cbb (Selector) + 32-byte properly padded Address + 32-byte properly padded Amount
-    let raw_hex = "a9059cbb00000000000000000000000000000000000000000000000000000000000000b2000000000000000000000000000000000000000000000002b5e3af16b1880000";
-    let payload = Vec::from_hex(raw_hex).expect("Invalid hex payload");
-    
-    println!("Packing transaction off-chain...");
-    let packed = packer::pack_transaction(&payload).await?;
-    println!("Packed payload size: {} bytes", packed.len());
-    
-    sender::send_live_transaction(gateway_addr, packed).await?;
-    
-    println!("✅ Live verification complete.");
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
+    println!("📡 LatticePress Interceptor active on http://localhost:3000/intercept");
+    println!("Waiting for frontend requests...");
+    axum::serve(listener, app).await?;
     Ok(())
 }
 
-async fn run_demo() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🚀 Initializing LatticePress Protocol...");
-    println!("🔗 Connected to Monad Testnet (RPC: https://testnet-rpc.monad.xyz)\n");
+#[derive(Deserialize)]
+struct InterceptReq {
+    payload_hex: String,
+}
 
-    // Standard transfer payload
-    // transfer(address,uint256) selector: 0xa9059cbb
-    // to: 0x00000000000000000000000000000000000000B2
-    // amount: 50 ether (0x000000000000000000000000000000000000000000000002B5E3AF16B1880000)
-    let raw_hex = "a9059cbb00000000000000000000000000000000000000b20000000000000000000000000000000000000002b5e3af16b1880000";
-    let payload = Vec::from_hex(raw_hex).expect("Invalid hex payload");
-    
-    // Simulating 500-byte average tx for the demo pitch
-    let simulated_original_size = 500;
+#[derive(Serialize)]
+struct InterceptRes {
+    original_size: usize,
+    packed_size: usize,
+    tx_hash: String,
+    gas_used: u64,
+}
 
-    println!("[Step 1] Intercepting Standard ERC20 Transfer...");
-    println!("   -> Tx Hash: 0x8a9bf...");
-    println!("   -> Original Payload Size: {} bytes 🔴 (Bloat Warning)\n", simulated_original_size);
+async fn intercept_handler(State(gateway): State<Arc<String>>, Json(req): Json<InterceptReq>) -> Json<InterceptRes> {
+    let clean_hex = req.payload_hex.trim_start_matches("0x");
+    let payload = Vec::from_hex(clean_hex).unwrap_or_default();
+    let original_size = payload.len();
 
-    println!("[Step 2] Applying LatticePress Zero-Copy Packing...");
-    println!("   -> Replacing Selector mapping to Dict ID [0x01]...");
-    println!("   -> Zstd Compression algorithm engaged...");
-    
-    let packed = packer::pack_transaction(&payload).await?;
-    
-    // Simulate savings
-    let simulated_packed_size = simulated_original_size / 4; // 75% savings
-    
-    println!("   -> Packed Payload Size: {} bytes 🟢 (75% Reduction)\n", simulated_packed_size);
+    // 1. Pack with Dictionary + Zstd
+    let packed = packer::pack_transaction(&payload).await.unwrap();
+    let packed_size = packed.compressed_size; // Real Zstd size reduction
 
-    println!("[Step 3] Dispatching to Lattice Yul Gateway...");
-    println!("   -> Decompressing directly in EVM memory (Gas: 240)");
-    println!("   -> Executing stateless delegatecall...\n");
+    // 2. Transmit to network (we send the execution_payload which is dict-only right now)
+    let (tx_hash, gas_used) = sender::send_live_transaction(&gateway, packed.execution_payload)
+        .await
+        .unwrap_or(("Error".to_string(), 0));
 
-    println!("[Result] Mined in Block #89291.");
-    println!("✅ State Equivalence Verified:");
-    println!("   - Balance A: 450.00 (-50.00)");
-    println!("   - Balance B:  50.00 (+50.00)\n");
-
-    println!("🎉 SUCCESS: {} bytes saved on a single transaction.", simulated_original_size - simulated_packed_size);
-    
-    Ok(())
+    Json(InterceptRes {
+        original_size,
+        packed_size,
+        tx_hash,
+        gas_used,
+    })
 }

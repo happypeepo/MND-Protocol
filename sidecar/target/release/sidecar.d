@@ -1,1 +1,1 @@
-/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/sidecar: /Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/src/main.rs /Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/src/packer.rs /Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/src/sender.rs
+/Users/bhoumiksangle/MND-Protocol/sidecar/target/release/sidecar: /Users/bhoumiksangle/MND-Protocol/sidecar/src/main.rs /Users/bhoumiksangle/MND-Protocol/sidecar/src/packer.rs /Users/bhoumiksangle/MND-Protocol/sidecar/src/sender.rs
