@@ -1,0 +1,9 @@
+/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/deps/cargo_platform-3a957095938c3f0f.d: /Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/lib.rs /Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/cfg.rs /Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/error.rs
+
+/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/deps/libcargo_platform-3a957095938c3f0f.rlib: /Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/lib.rs /Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/cfg.rs /Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/error.rs
+
+/Users/bhoumiksangle/MND-Protocol/LatticePress/sidecar/target/release/deps/libcargo_platform-3a957095938c3f0f.rmeta: /Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/lib.rs /Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/cfg.rs /Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/error.rs
+
+/Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/lib.rs:
+/Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/cfg.rs:
+/Users/bhoumiksangle/MND-Protocol/LatticePress/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo-platform-0.1.9/src/error.rs:
