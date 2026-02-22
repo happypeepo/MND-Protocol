@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('liveOriginal').textContent = data.original_size;
                     document.getElementById('livePacked').textContent = data.packed_size;
                     document.getElementById('liveGas').textContent = data.gas_used;
+                    document.getElementById('liveTime').textContent = data.compression_time_ms.toFixed(4);
                     
                     const hashLink = document.getElementById('liveHash');
                     hashLink.textContent = data.tx_hash.substring(0,10) + '...';

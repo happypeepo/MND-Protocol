@@ -54,6 +54,7 @@ struct InterceptRes {
     packed_size: usize,
     tx_hash: String,
     gas_used: u64,
+    compression_time_ms: f64,
 }
 
 async fn intercept_handler(State(gateway): State<Arc<String>>, Json(req): Json<InterceptReq>) -> Json<InterceptRes> {
@@ -64,6 +65,7 @@ async fn intercept_handler(State(gateway): State<Arc<String>>, Json(req): Json<I
     // 1. Pack with Dictionary + Zstd
     let packed = packer::pack_transaction(&payload).await.unwrap();
     let packed_size = packed.compressed_size; // Real Zstd size reduction
+    let compression_time_ms = packed.compression_time_ms;
 
     // 2. Transmit to network (we send the execution_payload which is dict-only right now)
     let (tx_hash, gas_used) = sender::send_live_transaction(&gateway, packed.execution_payload)
@@ -75,5 +77,6 @@ async fn intercept_handler(State(gateway): State<Arc<String>>, Json(req): Json<I
         packed_size,
         tx_hash,
         gas_used,
+        compression_time_ms,
     })
 }

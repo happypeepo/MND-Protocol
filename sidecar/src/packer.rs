@@ -7,12 +7,19 @@ const TRANSFER_DICT_ID: u8 = 0x01;
 pub struct PackedData {
     pub compressed_size: usize,
     pub execution_payload: Vec<u8>,
+    pub compression_time_ms: f64,
 }
 
 /// Zero-copy dictionary substitution and Zstd compression.
 pub async fn pack_transaction(payload: &[u8]) -> Result<PackedData, std::io::Error> {
+    let start = std::time::Instant::now();
+
     if payload.len() < 4 {
-        return Ok(PackedData { compressed_size: payload.len(), execution_payload: payload.to_vec() });
+        return Ok(PackedData { 
+            compressed_size: payload.len(), 
+            execution_payload: payload.to_vec(),
+            compression_time_ms: start.elapsed().as_secs_f64() * 1000.0,
+        });
     }
 
     let (selector, remaining_payload) = payload.split_at(4);
@@ -30,10 +37,13 @@ pub async fn pack_transaction(payload: &[u8]) -> Result<PackedData, std::io::Err
     // We use compression level 3
     let zstd_compressed = encode_all(intermediate_buffer.as_slice(), 3)?;
     
+    let duration = start.elapsed().as_secs_f64() * 1000.0;
+
     // For EVM execution, we only send the dict-packed bytes because full 
     // Zstd decompression requires an on-chain precompile.
     Ok(PackedData {
         compressed_size: zstd_compressed.len(),
         execution_payload: intermediate_buffer,
+        compression_time_ms: duration,
     })
 }
